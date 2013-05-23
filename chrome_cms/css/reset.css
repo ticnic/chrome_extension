@@ -1,0 +1,49 @@
+#chrome-expand-dialog{
+	position:absolute;
+	z-index:9999;
+	width:300px;
+	font-size:12px;
+	background-color:#ddd;
+	padding:5px 10px;
+	-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;
+	left:-300px;
+	top:-300px;
+}
+#chrome-expand-dialog th{
+	width:40px;
+	text-align:left;
+	font-weight:bold;
+}
+#chrome-expand-dialog td{
+	padding:5px 0;
+}
+#chrome-expand-dialog .chrome-expand-input{
+	width:240px;
+	height:18px;
+	-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;
+}
+#chrome-expand-dialog textarea.chrome-expand-input{
+	height:36px;
+	line-height:18px;
+}
+#chrome-expand-dialog .chrome-expand-button{
+	text-align:right;
+}
+#chrome-expand-dialog .chrome-expand-button a{
+	display:inline-block;
+	margin-left:5px;
+	width:60px;
+	height:22px;
+	line-height:22px;
+	text-align:center;
+	background-color:#eee;
+	border:1px solid #ccc;
+	text-decoration:none;
+	font-weight:bold;
+	color:#666;
+	-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;
+}
+#chrome-expand-dialog .chrome-expand-button a:hover{
+	color:#333;
+	background-color:#fff;
+}
