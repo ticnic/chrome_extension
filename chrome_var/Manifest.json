@@ -1,0 +1,17 @@
+{
+	"manifest_version": 2,
+	"name": "全局变量查找",
+	"version": "1.2",
+	"description": "自定义全局变量查找",
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"permissions": [
+		"contextMenus",
+		"tabs", "http://*/*", "https://*/*"
+	],
+	"browser_action": {
+		"default_icon": "icon.png",
+		"default_popup": "popup.html"
+	}
+}

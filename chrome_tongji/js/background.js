@@ -17,10 +17,15 @@ function addData(str){
 			break;
 		}
 	}
+	var json = JSON.parse(str);
+	var id_default = "";
+	if (json && json["pos"]){
+		id_default += "lv_"+json["pos"].replace(/\-/g,"_");
+	}
 	if (flag){
 		var key = new Date()*1;
 		BG.nslogdata[key] = {
-			id: '',
+			id: id_default,
 			name: '',
 			data: str
 		}
@@ -67,7 +72,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 //监控插件消息
 chrome.extension.onMessage.addListener(function(req){
 	if (req.type == 'save'){
-		var w1 = req.data.stats, w2 = {name: req.name, title: req.title, stat: []};
+		var w1 = req.data.stats, w2 = {type: 'adoc', name: req.name, title: req.title, stat: []};
 		var w0 = req.data.commonConditions;
 		for (var i=0,len1=w1.length; i<len1; i++){
 			(function(){
@@ -127,6 +132,10 @@ chrome.extension.onMessage.addListener(function(req){
 
 //监控页面切换
 chrome.tabs.onActivated.addListener(function(activeInfo){
-	nslogInit();
+	chrome.tabs.get(activeInfo.tabId, function(Tab){
+		if (/^http\:\/\/([\w-]+\.)+baidu\.com/.test(Tab.url)){
+			nslogInit();
+		}
+	});
 });
 

@@ -27,15 +27,22 @@ function getData(){
 	});
 	return dataNew;
 }
+var inputWidthArr = ["80","80","180"];
+if (localStorage.getItem('tongji_options') != null){
+	inputWidthArr = localStorage.getItem('tongji_options').split("|");
+}
+var inputWidth0 = inputWidthArr[0] < 80 ? "80px" : inputWidthArr[0]+"px";
+var inputWidth1 = inputWidthArr[1] < 80 ? "80px" : inputWidthArr[1]+"px";
+var inputWidth2 = inputWidthArr[2] <180 ? "180px" : inputWidthArr[2]+"px";
 $('#save').click(function(){
 	chrome.tabs.executeScript(null, {file: "js/save.js"});
 });
 $('#add').click(function(){
 	var time = new Date()*1;
 	var html = '<tr id="data_'+time+'">'
-			+'<td><input class="nslog-list-log-input" type="text" /></td>'
-			+'<td><input class="nslog-list-log-input" type="text" /></td>'
-			+'<td><input type="text" class="nslog-list-input" /></td>'
+			+'<td><input class="nslog-list-log-input" type="text" style="width:'+inputWidth0+'" /></td>'
+			+'<td><input class="nslog-list-log-input" type="text" style="width:'+inputWidth1+'" /></td>'
+			+'<td><input type="text" class="nslog-list-input" style="width:'+inputWidth2+'" /></td>'
 			+'<td><span class="nslog-list-log-del">X</span></td>'
 		+'</tr>';
 	$('#nslog-list-log-table tbody').append(html);
@@ -75,18 +82,7 @@ $('#nslog-list-log-submit').click(function(){
 	}
 	var data = getData();
 	chrome.extension.sendMessage({type:'replace',data:data});
-	var str = '如果统计列表没有选择数据源，会导致失败!!!\n\n以下信息将注入当前统计列表，请仔细检查!!!\n';
-	$.each(data, function(i,item){
-		var print = {};
-		print.id = item.id;
-		print.name = item.name;
-		$.extend(print, JSON.parse(item.data));
-		str += JSON.stringify(print);
-		str += '\n';
-	});
-	if (confirm(str)){
-		chrome.tabs.executeScript(null, {code: "NSLOG.addNslog(" + JSON.stringify(data) + ")"});
-	}
+	chrome.tabs.executeScript(null, {code: "NSLOG.addNslog(" + JSON.stringify(data) + ")"});
 });
 $('#nslog-list-log-table .nslog-list-log-del').live('click', function(){
 	var $parent = $(this).parents('tr');
@@ -118,9 +114,9 @@ function listRender(){
 	var html = '';
 	$.each(data, function(i,item){
 		html += '<tr id="data_'+i+'">'
-			+'<td><input class="nslog-list-log-input" type="text" value="'+encodeHTML(item.id)+'" /></td>'
-			+'<td><input class="nslog-list-log-input" type="text" value="'+encodeHTML(item.name)+'" /></td>'
-			+'<td><input type="text" class="nslog-list-input" value="'+encodeHTML(item.data)+'" /></td>'
+			+'<td><input class="nslog-list-log-input" type="text" value="'+encodeHTML(item.id)+'" style="width:'+inputWidth0+'" /></td>'
+			+'<td><input class="nslog-list-log-input" type="text" value="'+encodeHTML(item.name)+'" style="width:'+inputWidth1+'" /></td>'
+			+'<td><input type="text" class="nslog-list-input" value="'+encodeHTML(item.data)+'" style="width:'+inputWidth2+'" /></td>'
 			+'<td><span class="nslog-list-log-del">X</span></td>'
 		+'</tr>';
 	});
@@ -133,6 +129,6 @@ listRender();
 chrome.extension.onMessage.addListener(function(req){
 	if (req.type == 'addComplete'){
 		$('#nslog-list-log').hide().find('tbody').empty();
-		chrome.extension.sendMessage({type:'clear'});
+		//chrome.extension.sendMessage({type:'clear'});
 	}
 });
